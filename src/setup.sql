@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS customers(
-  cid INT NOT NULL,
+  cid INT NOT NULL AUTO_INCREMENT,
   firstname VARCHAR(45) NOT NULL,
   lastname VARCHAR(45) NOT NULL,
   password BLOB(256) NOT NULL,

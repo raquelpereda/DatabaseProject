@@ -8,6 +8,7 @@ import os
 import random
 import hashlib
 import string_utils
+import customer
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -50,7 +51,7 @@ def init(default=False):
     except connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Invalid password\n")
-            return -1
+            raise err
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
             print("Database does not exist\n")
         else:
@@ -72,8 +73,8 @@ def setup(cursor):
 
 def main():
     db = init()
-    populate_customers(db.cursor())
-    db.commit()
+    # c = customer.Customer(name, passwd, db)
+    db.close()
 
 if __name__ == '__main__':
     main()
