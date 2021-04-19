@@ -13,6 +13,9 @@ import customer
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
 def generate_customers(amount=2000):
+    """
+    returns (str) customer data path
+    """
     customers = []
     with open(f"{DIR_PATH}\\data\\firstnames.txt", "r", encoding="utf8") as fname_file, open(f"{DIR_PATH}\\data\\lastnames.txt", "r", encoding="utf8") as lname_file:
         fnames = fname_file.readlines()
@@ -29,15 +32,16 @@ def generate_customers(amount=2000):
     with open(f"{DIR_PATH}\\data\\customers.txt", "w") as customers_file:
         for customer in customers:
             customers_file.write(customer)
+    return f"{DIR_PATH}\\data\\customers.txt"
 
-def populate_customers(cursor):
+def populate_customers(cursor, path):
     query = "INSERT INTO customers (cid, firstname, lastname, password, phone) VALUES (%s, %s, %s, %s, %s)"
-    with open(f"{DIR_PATH}\\data\\customers.txt", "r") as customers_file:
+    with open(path, "r") as customers_file:
         customers = customers_file.readlines()
     for i in range(len(customers)):
         customers[i] = customers[i].split("\t")
     cursor.executemany(query, customers)
-    print(cursor.rowcount, "records inserted")
+    print(cursor.rowcount, "records inserted") #TODO: change to log
 
 def init(default=False):
     password = getpass("Enter password: ")
@@ -59,11 +63,11 @@ def init(default=False):
 
     if default:
         setup(db.cursor())
+        db.commit()
     return db
 
 def setup(cursor):
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    with open(f'{dir_path}\\setup.sql', 'r') as file:
+    with open(f'{DIR_PATH}\\setup.sql', 'r') as file:
         commands = file.read()
     try:
         cursor.execute(commands)
