@@ -1,6 +1,3 @@
-// insert: <script language="javascript" src="HEADER.js"></script>
-// to present this menu bar at the top of each document
-
 document.write("<CENTER>");
 document.write("<TABLE BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"0\"");
 document.write("    style=\"BORDER-collapse: collapse\" BORDERCOLOR=\"#111111\" WIDTH=\"80%\"");
@@ -17,9 +14,9 @@ document.write("  <TR>");
 document.write("    <TD NOWRAP WIDTH=\"122\">");
 document.write("    <P style=font-size:30px ALIGN=\"CENTER\"><A HREF=\"index.html\">Home Page</A></P></TD>");
 document.write("    <TD NOWRAP WIDTH=\"133\">");
-document.write("    <P style=font-size:30px ALIGN=\"CENTER\"><A HREF=\"login.jsp\">Login for Existing Users</A></P></TD>");
+document.write("    <P style=font-size:30px ALIGN=\"CENTER\"><A HREF=\"login.html\">Login for Existing Users</A></P></TD>");
 document.write("  	<TD NOWRAP WIDTH=\"133\">");
-document.write("    <P style=font-size:30px ALIGN=\"CENTER\"><A HREF=\"newuser.jsp\">Create New Account</A></P></TD>");
+document.write("    <P style=font-size:30px ALIGN=\"CENTER\"><A HREF=\"createAccount.html\">Create New Account</A></P></TD>");
 document.write("    <TD NOWRAP WIDTH=\"134\">");
 document.write("    <P style=font-size:30px ALIGN=\"CENTER\"><A HREF=\"basket.jsp\">Cart</A></P></TD>");
 document.write("  </TR>");
