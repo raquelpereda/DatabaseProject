@@ -1,12 +1,5 @@
-//
-// The Internet Book Shop - Menu Bar File
-//
-// This file contains the top menu bar for this site.
-// We can insert the tag:
-//	<script language="javascript" src="menu.js"></script>
+// insert: <script language="javascript" src="HEADER.js"></script>
 // to present this menu bar at the top of each document
-//
-
 
 document.write("<CENTER>");
 document.write("<TABLE BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"0\"");
