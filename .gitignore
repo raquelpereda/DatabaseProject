@@ -1,2 +1,4 @@
 src/tempCodeRunnerFile.py
 venv/
+__pycache__/app.cpython-38.pyc
+src/__pycache__/

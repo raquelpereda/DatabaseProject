@@ -3,13 +3,13 @@ CREATE TABLE IF NOT EXISTS customers(
   firstname VARCHAR(45) NOT NULL,
   lastname VARCHAR(45) NOT NULL,
   password BLOB(256) NOT NULL,
-  --address VARCHAR(200) NOT NULL,
   phone VARCHAR(12) NULL,
+  email VARCHAR(45) NOT NULL,
   PRIMARY KEY(cid)
 );
 
 CREEATE TABLE IF NOT EXISTS clothes(
-  clid INT NOT NULL AUTO_INCREMENT.
+  clid INT NOT NULL AUTO_INCREMENT,
   category VARCHAR(60),
   size VARCHAR(6),
   price REAL,
