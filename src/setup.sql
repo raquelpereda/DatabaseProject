@@ -7,11 +7,3 @@ CREATE TABLE IF NOT EXISTS customers(
   email VARCHAR(45) NOT NULL,
   PRIMARY KEY(cid)
 );
-
-CREEATE TABLE IF NOT EXISTS clothes(
-  clid INT NOT NULL AUTO_INCREMENT,
-  category VARCHAR(60),
-  size VARCHAR(6),
-  price REAL,
-  qty_in_stock INT
-);
