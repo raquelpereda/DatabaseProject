@@ -14,7 +14,7 @@ def login():
     msg = ''
     if request.method == 'POST':
         print(log_in(db, dict(request.form)))
-        return redirect(url_for('/'))
+        return redirect(url_for('index'))
        
     return render_template('login.html', msg=msg)
 
@@ -41,6 +41,6 @@ def search():
     return render_template('search.html')
 
 if __name__ == "__main__":
-    db = init() # use your own db initialization
+    db = init('clothing_store') # use your own db initialization
     app.run(debug=True)
 

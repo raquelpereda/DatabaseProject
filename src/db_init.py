@@ -47,7 +47,7 @@ def populate_customers(cursor, path):
     cursor.fetchall()
     print(cursor.rowcount, "records inserted") #TODO: change to log
 
-def init(default=False, db_name='clothing_store'):
+def init(db_name, default=False):
     password = getpass("Enter root password: ")
     try:
         db = connector.connect(
