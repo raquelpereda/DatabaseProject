@@ -4,8 +4,10 @@ document.write("    style=\"BORDER-collapse: collapse\" BORDERCOLOR=\"#111111\" 
 document.write("id=\"AutoNumber1\">");
 document.write("  <TR>");
 document.write("    <TD WIDTH=\"1%\">");
+document.write("    <A HREF=\"/\">");
 document.write("    <IMG BORDER=\"0\" SRC=\"static/images/Logo.png\"");
 document.write("WIDTH=\"325\" HEIGHT=\"260\"></TD>");
+document.write("    </A>")
 document.write("    <TD WIDTH=\"6%\">&nbsp;</TD>");
 document.write("    <TD WIDTH=\"25%\"><TABLE BORDER=\"5\" CELLPADDING=\"2\" CELLSPACING=\"2\"");
 document.write("	WIDTH=\"100%\" style=\"BORDER-collapse: collapse\"");

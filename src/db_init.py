@@ -37,7 +37,8 @@ def generate_customers(amount=2000, refresh=True):
             customers_file.write(customer)
     return f"{DIR_PATH}\\data\\customers.txt"
 
-def populate_customers(cursor, path):
+def populate_customers(db, path):
+    cursor = db.cursor()
     query = "INSERT INTO customers (cid, firstname, lastname, password, phone, email) VALUES (%s, %s, %s, %s, %s, %s)"
     with open(path, "r", encoding="utf8") as customers_file:
         customers = customers_file.readlines()
@@ -45,6 +46,7 @@ def populate_customers(cursor, path):
         customers[i] = customers[i].split("\t")
     cursor.executemany(query, customers)
     cursor.fetchall()
+    db.commit()
     print(cursor.rowcount, "records inserted") #TODO: change to log
 
 def init(db_name, default=False):
@@ -88,22 +90,26 @@ def init(db_name, default=False):
 
     if default:
         setup(db.cursor())
-        db.commit()
+        db = connector.connect(
+            host="localhost",
+            user="root",
+            passwd=password,
+            database=db_name
+        )
     return db
 
 def setup(cursor):
     with open(f'{DIR_PATH}\\setup.sql', 'r') as file:
         commands = file.read()
     try:
-        cursor.execute(commands)
+        cursor.execute(commands, multi=True)
     except connector.Error as err:
         # TODO: handle
         raise err
 
 def default_init(db_name):
-    db = init(True, db_name)
-    populate_customers(db.cursor(), generate_customers(refresh=False))
-    db.commit()
+    db = init(db_name, True)
+    populate_customers(db, generate_customers(refresh=False))
     db.close()
     print("Successfully initialized database")
 
