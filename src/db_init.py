@@ -58,6 +58,9 @@ def init(db_name, default=False):
             passwd=password,
             database=db_name
         )
+        if default:
+            raise ValueError("database already exists, use init")
+        
     except connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Invalid password")
