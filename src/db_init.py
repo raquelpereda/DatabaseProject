@@ -18,18 +18,19 @@ def generate_customers(amount=2000, refresh=True):
     """
     if not refresh:
         return f"{DIR_PATH}\\data\\customers.txt"
+    
     customers = []
     with open(f"{DIR_PATH}\\data\\firstnames.txt", "r", encoding="utf8") as fname_file, open(f"{DIR_PATH}\\data\\lastnames.txt", "r", encoding="utf8") as lname_file:
         fnames = fname_file.readlines()
         lnames = lname_file.readlines()
     for i in range(amount):
         cid = amount + i # arbitrary
-        fname = fnames[random.randint(0, len(fnames))].strip()
-        lname = lnames[random.randint(0, len(lnames))].strip()
+        fname = fnames[random.randint(0, len(fnames)-1)].strip()[:44] # 44 for length limits
+        lname = lnames[random.randint(0, len(lnames)-1)].strip()[:44]
         phone = random.randint(1013108101, 91230099128) # arbitrary
         #TODO: add email
-        email = fname[0] + lname[0] + str(random.randint(0, 99)) + '@gmail.com'
-        email = "".join(email.split(" "))
+        email = fname[0] + lname + str(random.randint(0, 99)) + '@gmail.com'
+        email = "".join(email.split(" "))[:44]
         password = hashlib.sha256((string_utils.shuffle(fname) + string_utils.shuffle(lname) + str(random.randint(0000, 9999))).encode()).digest()
         customers.append(f"{cid}\t{fname}\t{lname}\t{password}\t{phone}\t{email}\n")
     with open(f"{DIR_PATH}\\data\\customers.txt", "w", encoding="utf8") as customers_file:
@@ -59,7 +60,9 @@ def init(db_name, default=False):
             database=db_name
         )
         if default:
-            raise ValueError("database already exists, use init")
+            # TODO: drop if exists
+            print(f"database already exists, returning connector for {db_name}")
+            return db
         
     except connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -92,7 +95,7 @@ def init(db_name, default=False):
             raise err
 
     if default:
-        setup(db.cursor())
+        setup(db)
         db = connector.connect(
             host="localhost",
             user="root",
@@ -101,18 +104,21 @@ def init(db_name, default=False):
         )
     return db
 
-def setup(cursor):
+def setup(db):
+    cursor = db.cursor()
     with open(f'{DIR_PATH}\\setup.sql', 'r') as file:
         commands = file.read()
     try:
-        cursor.execute(commands, multi=True)
+        result = cursor.execute(commands, multi=True)
+        for _ in result:
+            pass
     except connector.Error as err:
         # TODO: handle
         raise err
 
 def default_init(db_name):
     db = init(db_name, True)
-    populate_customers(db, generate_customers(refresh=False))
+    populate_customers(db, generate_customers())
     db.close()
     print("Successfully initialized database")
 
