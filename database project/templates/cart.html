@@ -14,7 +14,17 @@
         <span class="cart-quantity cart-header cart-column">QUANTITY</span>
     </div>
     <div class="cart-items">
+        {% for result_element in result %}
+        <div class="shop-item">
+            <span class="item-title">{{result_element.clname}}</span>
+            <TD WIDTH = 95>
+                <INPUT NAME="item" TYPE="checkbox" VALUE={{result_element}} checked>
+            </TD>
+        </div>
+        {% endfor %}
+        {% block content %}{%endblock%}        
     </div>
+    <button><a href="/checkout">Check out</a></button>
 
 </BODY>
 <script language="javascript" src="static/scripts/footer.js"></script>
