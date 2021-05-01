@@ -1,6 +1,7 @@
 <HTML>
     <Title>Search Results</Title>
     <script language="javascript" src="static/scripts/HEADER.js"></script>
+
     
     <BODY style="background-color:#F7F7F7;">
     
@@ -13,13 +14,17 @@
             <div class="shop-item">
                 <!--H3>{{result_element}}</H3-->
                 <span class="item-title">{{result_element}}</span>
-                <button class="item-button" type="button">ADD TO CART</button>
+                <!-- <button class="item-button" type="button">ADD TO CART</button> -->
+                <TD WIDTH = 95>
+                    ADD<INPUT NAME="item" TYPE="Checkbox" VALUE={{result_element}}>
+                </TD>
             </div>
            {% endfor %}
           {% block content %}{% endblock %}
         </div>
+        <CENTER><INPUT TYPE="submit" NAME="Add to Cart" VALUE="Continue to checkout"></CENTER>
     </form>
-    <p style=font-size:20px><a href="/cart">Continue to cart.</a> </p>
+    <!-- <p style=font-size:20px><a href="/cart">Continue to cart.</a> </p> -->
 
 </BODY>
 <script language="javascript" src="static/scripts/footer.js"></script>

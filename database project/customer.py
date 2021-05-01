@@ -99,14 +99,13 @@ def buy(db, customer, cardNum):
     check_availability = "SELECT qty_in_stock from clothes where clid = %s"
     decrement_qry = "UPDATE clothes SET qty_in_stock = qty_in_stock - %s where clid= %s"
     
-    for item, qty in customer.cart.items:
+    for item, qty in customer.cart.items.items():
         cursor.execute(check_availability, (item.clid,))
-        qty_avail = cursor.fetchone()
+        qty_avail = cursor.fetchone()[0]
         if qty_avail >= qty:
             now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             cursor.execute(decrement_qry, (qty, item.clid))
             cursor.execute(transaction_query, (customer.cid, item.clid, now, 12345, qty))
-            customer.cart.remove_item(item, all=True)
         else:
             print("Item not in stock")
 

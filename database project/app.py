@@ -1,5 +1,7 @@
 from flask import Flask, request, render_template, url_for, redirect, flash
 from customer import *
+from item import *
+from cart import *
 from db_init import init
 import os
 import json
@@ -54,7 +56,14 @@ def faq():
 @app.route('/searchResults', methods = ['GET', 'POST'])
 def searchResults():
     if request.method == 'POST':
-        print(request.form)
+        if not user:
+            return redirect(url_for('login'))        
+        data = request.form.getlist('item')
+        for clid in data:
+            clid = clid[1:-1]
+            user.cart.add_item(Item(get_item(db, clid)))
+        print(user.cart.items)
+        return redirect(url_for('checkout'))
     return render_template('searchResults.html', result = results)
 
 @app.route('/checkout', methods=['GET', 'POST'])
@@ -63,6 +72,8 @@ def checkout():
         if not user:
             return redirect(url_for('login'))
         buy(db, user, dict(request.form)["cardNum"])
+        flash('Your order has been placed')
+        return redirect(url_for('index'))
     return render_template('checkout.html')
 
 @app.route('/cart')
@@ -84,7 +95,6 @@ def search():
         color = request.form.getlist('color')
         for cl in color:
             data["color"].append(cl)
-        # return render_template('search.html')
         results = searchClothes2(db, data)
         if not results:
             results = "No clothes were found."
@@ -92,7 +102,7 @@ def search():
     return render_template('search.html')
 
 if __name__ == "__main__":
-    db = init('clothing_store') # use your own db initialization
+    db = init('test_db') # use your own db initialization
     app.secret_key = "something only you know"
     user = None
     results = None
