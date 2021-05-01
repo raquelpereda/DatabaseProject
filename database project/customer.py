@@ -60,23 +60,23 @@ def searchClothes(db,data):
 
 def searchClothes2(db, data):
     cursor = db.cursor()
-    query = "SELECT clname, price FROM clothes WHERE "
+    query = "SELECT * FROM clothes WHERE "
     for i, item in enumerate(data["category"]):
-        query += f"category='{item}' "
+        query += f"category='{item}'"
         if i != len(data["category"]) -1:
-            query += "OR "
+            query += " OR "
     end = False
-    if len(data["size"]) > 0:
+    if len(data["size"]) > 0 and len(data["category"]) > 0:
         query += " AND ("
         end = True
     for i, item in enumerate(data["size"]):
-        query += f"size='{item}' "
+        query += f"size='{item}'"
         if i != len(data["size"]) -1:
-            query += "OR "
+            query += " OR "
     if end:
         query += ")"
         end = False
-    if len(data["color"]) > 0:
+    if len(data["color"]) > 0 and len(data["size"]) > 0:
         query += " AND ("
         end = True
     for i, item in enumerate(data["color"]):
@@ -87,7 +87,7 @@ def searchClothes2(db, data):
             query += ")"
             end = False
     if len(data["category"]) < 1 and len(data["size"]) < 1 and len(data["color"]) < 1:
-        query = "SELECT clname, price FROM clothes"
+        query = "SELECT * FROM clothes"
     print(query)
     cursor.execute(query)
     results = cursor.fetchall()

@@ -56,9 +56,11 @@ def faq():
 @app.route('/searchResults', methods = ['GET', 'POST'])
 def searchResults():
     if request.method == 'POST':
+        print(results)
         if not user:
             return redirect(url_for('login'))        
         data = request.form.getlist('item')
+        print(data)
         for clid in data:
             clid = clid[1:-1]
             user.cart.add_item(Item(get_item(db, clid)))

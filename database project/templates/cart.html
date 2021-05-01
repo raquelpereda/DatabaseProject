@@ -8,23 +8,26 @@
     <CENTER><H1>My Cart</H1></CENTER>
     <CENTER><H3>Click "Next" to check out.</H3></CENTER>
 
-    <div class="cart-row">
-        <span class="cart-item cart-header cart-column">ITEM</span>
-        <span class="cart-price cart-header cart-column">PRICE</span>
-        <span class="cart-quantity cart-header cart-column">QUANTITY</span>
-    </div>
-    <div class="cart-items">
+    <CENTER>
+    <table style="width:50%">
+        <tr>
+            <th class="cart-item cart-header cart-column">ITEM</th>
+            <th class="cart-price cart-header cart-column">PRICE</th>
+            <th class="cart-quantity cart-header cart-column">QUANTITY</th>
+            <th></th>
+        </tr>
         {% for result_element in result %}
-        <div class="shop-item">
-            <span class="item-title">{{result_element.clname}}</span>
-            <TD WIDTH = 95>
-                <INPUT NAME="item" TYPE="checkbox" VALUE={{result_element}} checked>
-            </TD>
-        </div>
+        <tr>
+            <td>{{result_element.clname}}</td>
+            <td>$ {{result_element.price}}</td>
+            <td>{{result_element.qty}}</td>
+            <td><INPUT NAME="item" TYPE="checkbox" VALUE={{result_element}} checked></td>
+        <tr>
         {% endfor %}
         {% block content %}{%endblock%}        
-    </div>
+    </table>
     <button><a href="/checkout">Check out</a></button>
+    </CENTER>
 
 </BODY>
 <script language="javascript" src="static/scripts/footer.js"></script>

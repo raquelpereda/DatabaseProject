@@ -12,23 +12,23 @@
 <p style=font-size:20px><a href="/inventory">INVENTORY</a> &nbsp;Administrators can also take a look at our inventory here.</p>
 </tr>
 </table>
-    </td>  
-    <img style="width: 1000px; height: 600px;"
-	src="static/images/Clothing.png"></td>
 </div>
 </BODY>
-<body>
-  <div class="container">
-    {% with messages = get_flashed_messages() %}
-     {% if messages %}
-       {% for message in messages %}
-       <div class="flashed_message" role="alert">
-       <button type="button" class="close" data-dismiss="alert" aria- label="Close"><span aria-hidden="true">×</span></button>
-       {{message}}
-       </div>
-     {% endfor %}
-     {% endif %}
-   {% endwith %}
-    {% block content %}{% endblock %}
+<div class="container">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  {% for message in messages %}
+  <center>
+  <div class="flashed_message" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria- label="Close"><span aria-hidden="true">×</span></button>
+    {{message}}
+  </div>
+  </center>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</div>
+<center><img style="width: 1000px; height: 600px;" src="static/images/Clothing.png"></td></center>
 <script language="javascript" src="static/scripts/FOOTER.js"></script>
 </HTML>

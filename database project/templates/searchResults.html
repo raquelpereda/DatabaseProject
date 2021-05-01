@@ -9,19 +9,24 @@
     <CENTER><H3>From your search, we found all these clothes:</H3></CENTER>
 
     <FORM NAME=SearchResults ACTION="#" METHOD=POST>
-        <div class="shop-items">
-            {% for result_element in result %}
-            <div class="shop-item">
-                <!--H3>{{result_element}}</H3-->
-                <span class="item-title">{{result_element}}</span>
-                <!-- <button class="item-button" type="button">ADD TO CART</button> -->
-                <TD WIDTH = 95>
-                    ADD<INPUT NAME="item" TYPE="Checkbox" VALUE={{result_element}}>
-                </TD>
-            </div>
-           {% endfor %}
-          {% block content %}{% endblock %}
-        </div>
+        <!-- <div class="shop-items"> -->
+            <CENTER>
+            <table style="width:50%">
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+                {% for result_element in result %}
+                <tr>
+                    <td>{{result_element[1]}}</td>
+                    <td>$ {{result_element[5]}}</td>
+                    <td>ADD<INPUT NAME="item" TYPE="Checkbox" VALUE={{result_element}}></td>
+                </tr>
+                {% endfor %}
+                {% block content %}{% endblock %}
+            </table>
+            </CENTER>
         <CENTER><INPUT TYPE="submit" NAME="Add to Cart" VALUE="Continue to checkout"></CENTER>
     </form>
     <!-- <p style=font-size:20px><a href="/cart">Continue to cart.</a> </p> -->
