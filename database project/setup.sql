@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS customers(
   password BLOB(256) NOT NULL,
   phone VARCHAR(12) NULL,
   email VARCHAR(45) NOT NULL,
+  administrator TINYINT NULL,
   PRIMARY KEY(cid)
 );
 

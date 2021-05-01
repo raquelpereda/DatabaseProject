@@ -54,6 +54,11 @@ def populate_clothes(cursor):
         for i,row in data.iterrows():
             cursor.execute(query, tuple(row))
 
+def populate_admins(cursor):
+        #password = 'pass123'
+        #password = hashlib.sha256(password.encode()).digest()
+        query = "INSERT INTO customers (firstname, lastname, password, phone, email, administrator) VALUES ('Raquel', 'Pereda', 'pass123', '813-123-4567', 'raquelpereda@gmail.com', TRUE)"
+        cursor.execute(query)
 
 def init(db_name, default=False):
     password = getpass("Enter root password: ")
@@ -128,9 +133,11 @@ def default_init(db_name):
     db = init(db_name, True)
     populate_clothes(db.cursor())
     populate_customers(db.cursor(), generate_customers(refresh=False))
+    populate_admins(db.cursor())
     db.commit()
     db.close()
     print("Successfully initialized database")
+    
 
 if __name__ == '__main__':
     default_init(input("Enter database name: "))

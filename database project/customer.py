@@ -60,7 +60,7 @@ def searchClothes(db,data):
 
 def searchClothes2(db, data):
     cursor = db.cursor()
-    query = "SELECT * FROM clothes WHERE "
+    query = "SELECT clname, price FROM clothes WHERE "
     for i, item in enumerate(data["category"]):
         query += f"category='{item}' "
         if i != len(data["category"]) -1:
@@ -87,8 +87,8 @@ def searchClothes2(db, data):
             query += ")"
             end = False
     if len(data["category"]) < 1 and len(data["size"]) < 1 and len(data["color"]) < 1:
-        query = "SELECT * FROM clothes"
-    # print(query)
+        query = "SELECT clname, price FROM clothes"
+    print(query)
     cursor.execute(query)
     results = cursor.fetchall()
     return results
@@ -109,6 +109,26 @@ def buy(db, customer, cardNum):
             db.commit()
         else:
             print("Item not in stock")
+
+def admin(db):
+   
+    #cursor = db.cursor()
+    #admin_query = "SELECT cid FROM customers WHERE administrator = TRUE AND cid = %s"
+    #print(admin_query)
+    #cursor.execute(admin_query, customer.cid)
+    #results = cursor.fetchone()
+    #print(results)
+    #cursor.close()
+    #if not results:
+    #    return 
+    
+    inventory_query = "SELECT * FROM clothes"
+    cursor = db.cursor()
+    cursor.execute(inventory_query,)
+    inventory = cursor.fetchall()
+    print(inventory)
+    return inventory
+    
 
 if __name__ == "__main__":
     b = {'category': ['T-Shirt', 'Dress'], 'size': ['Small', 'Large'], 'color': ['Green', 'Brown', 'Purple']}
