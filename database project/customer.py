@@ -106,6 +106,7 @@ def buy(db, customer, cardNum):
             now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             cursor.execute(decrement_qry, (qty, item.clid))
             cursor.execute(transaction_query, (customer.cid, item.clid, now, 12345, qty))
+            db.commit()
         else:
             print("Item not in stock")
 

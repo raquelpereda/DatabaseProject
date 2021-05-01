@@ -78,6 +78,8 @@ def checkout():
 
 @app.route('/cart')
 def cart():
+    if not user:
+        return render_template('cart.html')
     return render_template('cart.html', result = user.cart.items.keys())
 
 @app.route('/search', methods = ['GET', 'POST'])
