@@ -1,9 +1,11 @@
 from flask import Flask, request, render_template, url_for, redirect, flash
-from customer import sign_up, log_in, searchClothes
+from customer import *
 from db_init import init
 import os
+import json
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def index():
@@ -17,6 +19,8 @@ def login():
         if not results:
             flash('Wrong login information. Please try again.')
             return render_template('login.html')
+        global user
+        user = Customer(results)
         flash('You have been successfully logged in.')
         return redirect(url_for('index'))
        
@@ -47,12 +51,18 @@ def about():
 def faq():
     return render_template('faq.html')
 
-@app.route('/searchResults')
-def searchResults(result):
-    return render_template('searchResults.html')
+@app.route('/searchResults', methods = ['GET', 'POST'])
+def searchResults():
+    if request.method == 'POST':
+        print(request.form)
+    return render_template('searchResults.html', result = results)
 
-@app.route('/checkout')
+@app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
+    if request.method == 'POST':
+        if not user:
+            return redirect(url_for('login'))
+        buy(db, user, dict(request.form)["cardNum"])
     return render_template('checkout.html')
 
 @app.route('/cart')
@@ -62,15 +72,29 @@ def cart():
 @app.route('/search', methods = ['GET', 'POST'])
 def search():
     if request.method == 'POST':
-        data = request.form.getlist('SearchType')
-        results = searchClothes(db, data)
+        global results
+        # data = request.form.getlist('SearchType')
+        data = {"category":[], "size":[], "color":[]}
+        cat = request.form.getlist('category')
+        for c in cat:
+            data["category"].append(c)
+        size = request.form.getlist('size')
+        for s in size:
+            data["size"].append(s)
+        color = request.form.getlist('color')
+        for cl in color:
+            data["color"].append(cl)
+        # return render_template('search.html')
+        results = searchClothes2(db, data)
         if not results:
             results = "No clothes were found."
-        return render_template('searchResults.html', result = results)
+        return redirect(url_for('searchResults'))
     return render_template('search.html')
 
 if __name__ == "__main__":
     db = init('clothing_store') # use your own db initialization
     app.secret_key = "something only you know"
+    user = None
+    results = None
     app.run(debug=True)
 

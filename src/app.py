@@ -41,6 +41,6 @@ def search():
     return render_template('search.html')
 
 if __name__ == "__main__":
-    db = init('clothing_store') # use your own db initialization
+    db = init('test_db') # use your own db initialization
     app.run(debug=True)
 

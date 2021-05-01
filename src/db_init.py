@@ -12,6 +12,33 @@ import customer
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
+def generate_clothes(amount=500, refresh=True):
+    if not refresh:
+        return f"{DIR_PATH}\\data\\clothes.txt"
+        
+    categories = {1:"accessory", 2:"bottom", 3:"top", 4:"shoes", 5:"one piece", 
+                  6:"two piece", 7:"three piece", 8:"dress", 9:"over", 10:"underwear"}
+    # cat = (baby, child, teen, adult, male, female, unisex)
+    colors = ["red", "blue", "green", "yellow", "orange", "black", "white", "gray", "gold", "rose gold"]
+    sizes = ["XXS", "XS", "S", "M", "L", "XL", "XXL"]
+    clothes = []
+    with open(f"{DIR_PATH}\\data\\brands.txt", "r", encoding="utf8") as brands_file:
+        brands = brands_file.readlines()
+
+    for i in range(amount):
+        clid = amount + i
+        clname = random.choice(brands).strip()
+        color = random.choice(colors)
+        size = random.choice(sizes)
+        category = random.choice(list(categories.values()))
+        price = round(random.uniform(4.99, 79.99), 2) #TODO: use weights
+        qty = random.randint(1, 200)
+        clothes.append(f"{clid}\t{clname}\t{color}\t{size}\t{category}\t{price}\t{qty}\n")
+    with open(f"{DIR_PATH}\\data\\clothes.txt", "w", encoding="utf8") as clothes_file:
+        for item in clothes:
+            clothes_file.write(item)
+    return f"{DIR_PATH}\\data\\clothes.txt"
+
 def generate_customers(amount=2000, refresh=True):
     """
     returns (str) customer data path
@@ -38,6 +65,18 @@ def generate_customers(amount=2000, refresh=True):
             customers_file.write(customer)
     return f"{DIR_PATH}\\data\\customers.txt"
 
+def populate_clothes(db, path):
+    cursor = db.cursor()
+    query = "INSERT INTO clothes (clid, clname, color, size, category, price, qty_in_stock) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    with open(path, "r", encoding="utf8") as clothes_file:
+        clothes = clothes_file.readlines()
+    for i in range(len(clothes)):
+        clothes[i] = clothes[i].split("\t")
+    cursor.executemany(query, clothes)
+    cursor.fetchall()
+    db.commit()
+    print(cursor.rowcount, "clothes inserted")
+
 def populate_customers(db, path):
     cursor = db.cursor()
     query = "INSERT INTO customers (cid, firstname, lastname, password, phone, email) VALUES (%s, %s, %s, %s, %s, %s)"
@@ -48,7 +87,7 @@ def populate_customers(db, path):
     cursor.executemany(query, customers)
     cursor.fetchall()
     db.commit()
-    print(cursor.rowcount, "records inserted") #TODO: change to log
+    print(cursor.rowcount, "customers inserted") #TODO: change to log
 
 def init(db_name, default=False):
     password = getpass("Enter root password: ")
@@ -119,6 +158,7 @@ def setup(db):
 def default_init(db_name):
     db = init(db_name, True)
     populate_customers(db, generate_customers())
+    populate_clothes(db, generate_clothes())
     db.close()
     print("Successfully initialized database")
 

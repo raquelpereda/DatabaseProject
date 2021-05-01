@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS clothes (
   color VARCHAR(45) NULL,
   size VARCHAR(6) NULL,
   category VARCHAR(60) NULL,
-  price DECIMAL(15,1) NULL,
+  price DECIMAL(4,2) NULL,
   qty_in_stock INT NULL,
   PRIMARY KEY (clid)
   );

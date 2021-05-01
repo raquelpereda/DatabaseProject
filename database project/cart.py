@@ -1,26 +1,25 @@
-import item.Item
+from item import Item
 
 class Cart:
     def __init__(self):
         self.items = dict() # item : qty
     
-    def add_item(self, item):
-        if item.qty_in_stock < 1:
-            # raise error
-            return False
-            
+    def add_item(self, item):    
         if item in self.items:
             self.items[item] += 1
         else:
             self.items[item] = 1
     
-    def remove_item(self, item):
+    def remove_item(self, item, all=False):
         if item in self.items:
-            del self.items[item]
-        else:
-            # throw error
-            pass
-    
+            if all:
+                del self.items[item]
+            else:
+                if self.items[item] > 1:
+                    self.items[item] -= 1
+                else:
+                    del self.items[item]
+
     def total(self):
         total = 0
         for item, qty in self.items:

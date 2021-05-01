@@ -4,3 +4,7 @@ __pycache__/app.cpython-38.pyc
 src/__pycache__/
 .vscode/settings.json
 __pycache__/app.cpython-37.pyc
+database project/__pycache__/cart.cpython-38.pyc
+database project/__pycache__/customer.cpython-38.pyc
+database project/__pycache__/db_init.cpython-38.pyc
+database project/__pycache__/item.cpython-38.pyc

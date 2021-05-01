@@ -9,7 +9,7 @@ import os
 import random
 import hashlib
 import string_utils
-import customer
+
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 def generate_customers(amount=2000, refresh=True):
     """
@@ -131,5 +131,6 @@ def default_init(db_name):
     db.commit()
     db.close()
     print("Successfully initialized database")
+
 if __name__ == '__main__':
     default_init(input("Enter database name: "))

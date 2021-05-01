@@ -1,18 +1,20 @@
 import sys
 import hashlib
 from getpass import getpass
+from cart import Cart
+from datetime import datetime
+from db_init import init
 
 class Customer:
-    def __init__(self, email, password_hash, db):
-        self.email = email
-        self.password_hash = hashlib.sha256(password_hash.encode()).digest()
-        self.db_handle = db
-        data = log_in(db, (self.email, self.password_hash))
-        try:
-            self.cid, self.firstname, self.lastname, _, self.phone = data[0]
-        except:
-            print("Invalid email or password")
-            sys.exit(1)
+    def __init__(self, data):
+        self.cid = data[0]
+        self.firstname = data[1]
+        self.lastname = data[2]
+        self.phone = data[3]
+        self.email = data[4]
+        self.cart = Cart()
+    
+
 
 def sign_up(db, data=None):
     cursor = db.cursor()
@@ -55,3 +57,60 @@ def searchClothes(db,data):
     results = cursor.fetchall()
     print(results)
     return results
+
+def searchClothes2(db, data):
+    cursor = db.cursor()
+    query = "SELECT * FROM clothes WHERE "
+    for i, item in enumerate(data["category"]):
+        query += f"category='{item}' "
+        if i != len(data["category"]) -1:
+            query += "OR "
+    end = False
+    if len(data["size"]) > 0:
+        query += " AND ("
+        end = True
+    for i, item in enumerate(data["size"]):
+        query += f"size='{item}' "
+        if i != len(data["size"]) -1:
+            query += "OR "
+    if end:
+        query += ")"
+        end = False
+    if len(data["color"]) > 0:
+        query += " AND ("
+        end = True
+    for i, item in enumerate(data["color"]):
+        query += f"color='{item}' "
+        if i != len(data["color"]) -1:
+            query += "OR "              
+    if end:
+            query += ")"
+            end = False
+    if len(data["category"]) < 1 and len(data["size"]) < 1 and len(data["color"]) < 1:
+        query = "SELECT * FROM clothes"
+    # print(query)
+    cursor.execute(query)
+    results = cursor.fetchall()
+    return results
+
+def buy(db, customer, cardNum):
+    cursor = db.cursor()
+    transaction_query = "INSERT INTO transaction (cid, clid, date, cardNum, qty) VALUES (%s, %s, %s, %s, %s)"
+    check_availability = "SELECT qty_in_stock from clothes where clid = %s"
+    decrement_qry = "UPDATE clothes SET qty_in_stock = qty_in_stock - %s where clid= %s"
+    
+    for item, qty in customer.cart.items:
+        cursor.execute(check_availability, (item.clid,))
+        qty_avail = cursor.fetchone()
+        if qty_avail >= qty:
+            now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            cursor.execute(decrement_qry, (qty, item.clid))
+            cursor.execute(transaction_query, (customer.cid, item.clid, now, 12345, qty))
+            customer.cart.remove_item(item, all=True)
+        else:
+            print("Item not in stock")
+
+if __name__ == "__main__":
+    b = {'category': ['T-Shirt', 'Dress'], 'size': ['Small', 'Large'], 'color': ['Green', 'Brown', 'Purple']}
+    db = init("test_db")
+    print(searchClothes2(db, b))
