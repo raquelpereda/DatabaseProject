@@ -1,0 +1,33 @@
+<HTML>
+<TITLE>CS Home Page</TITLE>
+<script language="javascript" src="static/scripts/HEADER.js"></script>
+<BODY style="background-color:#F7F7F7;">
+<div align="center">
+<center><H1 ><span style="color: #000000;">Database  <span style="color: #000000;">Fashion</H1></center>
+<TABLE width="90%" CELLPADDING="5" CELLSPACING="4">
+  <tr>
+    <td width="100%" valign="top">
+<center><H3 >Welcome to Database Fashion. The best online option for buying clothes. </H3></center>
+<p style=font-size:20px><a href="/login">LOGIN HERE</a> or <a href="/createAccount">CREATE ACCOUNT</a>.  &nbsp;We also allow you to continue as a Guest if you do not wish to create an account.</p>
+  </tr>
+</table>
+    </td>  
+    <img style="width: 1000px; height: 600px;"
+	src="static/images/Clothing.png"></td>
+</div>
+</BODY>
+<body>
+  <div class="container">
+    {% with messages = get_flashed_messages() %}
+     {% if messages %}
+       {% for message in messages %}
+       <div class="flashed_message" role="alert">
+       <button type="button" class="close" data-dismiss="alert" aria- label="Close"><span aria-hidden="true">×</span></button>
+       {{message}}
+       </div>
+     {% endfor %}
+     {% endif %}
+   {% endwith %}
+    {% block content %}{% endblock %}
+<script language="javascript" src="static/scripts/FOOTER.js"></script>
+</HTML>
