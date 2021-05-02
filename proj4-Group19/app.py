@@ -88,7 +88,6 @@ def cart():
 def search():
     if request.method == 'POST':
         global results
-        # data = request.form.getlist('SearchType')
         data = {"category":[], "size":[], "color":[]}
         cat = request.form.getlist('category')
         for c in cat:
@@ -99,7 +98,7 @@ def search():
         color = request.form.getlist('color')
         for cl in color:
             data["color"].append(cl)
-        results = searchClothes2(db, data)
+        results = searchClothes(db, data)
         if not results:
             results = "No clothes were found."
         return redirect(url_for('searchResults'))
@@ -108,15 +107,8 @@ def search():
 @app.route('/inventory', methods = ['GET', 'POST'])
 def inventory():
     msg = ''
-        #if not user:
-        #    return redirect(url_for('login'))
     inventory = admin(db)
-        #if inventory == '':
-        #    flash("You do not have access to the inventory.")
-        #    return redirect(url_for('index'))
     return render_template('inventory.html', inventory_items = inventory)
-    
-    #return render_template('inventory.html', msg = msg)
  
 if __name__ == "__main__":
     db = init('test_db') # use your own db initialization

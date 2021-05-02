@@ -26,7 +26,6 @@ def generate_customers(amount=2000, refresh=True):
         fname = fnames[random.randint(0, len(fnames))].strip()
         lname = lnames[random.randint(0, len(lnames))].strip()
         phone = random.randint(1013108101, 91230099128) # arbitrary
-        #TODO: add email
         email = fname[0] + lname[0] + str(random.randint(0, 99)) + '@gmail.com'
         email = "".join(email.split(" "))
         password = hashlib.sha256((string_utils.shuffle(fname) + string_utils.shuffle(lname) + str(random.randint(0000, 9999))).encode()).digest()
@@ -45,7 +44,7 @@ def populate_customers(cursor, path):
         customers[i] = customers[i].split("\t")
     cursor.executemany(query, customers)
     cursor.fetchall()
-    print(cursor.rowcount, "records inserted") #TODO: change to log
+    print(cursor.rowcount, "records inserted")
 
 def populate_clothes(cursor):
         query = "INSERT INTO CLOTHES (clid, clname, color, size, category, price, qty_in_stock) VALUES (%s, %s, %s, %s, %s, %s, %s)"
@@ -55,8 +54,6 @@ def populate_clothes(cursor):
             cursor.execute(query, tuple(row))
 
 def populate_admins(cursor):
-        #password = 'pass123'
-        #password = hashlib.sha256(password.encode()).digest()
         query = "INSERT INTO customers (firstname, lastname, password, phone, email, administrator) VALUES ('Raquel', 'Pereda', 'pass123', '813-123-4567', 'raquelpereda@gmail.com', TRUE)"
         cursor.execute(query)
 
@@ -126,7 +123,6 @@ def setup(cursor):
     try:
         cursor.execute(commands)
     except connector.Error as err:
-        # TODO: handle
         raise err
 
 def default_init(db_name):

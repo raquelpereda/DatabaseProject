@@ -43,22 +43,7 @@ def log_in(db, data=None):
     results = cursor.fetchone()
     return results
 
-def searchClothes(db,data):
-    cursor = db.cursor()
-    print(data)
-    if not data:
-        cursor.execute("SELECT clname, price FROM clothes")
-        allResults = cursor.fetchall()
-        cursor.close()
-        return allResults
-    cursor = db.cursor(buffered = True)
-    query = "SELECT clname, price FROM clothes WHERE size=%s AND category =%s AND color=%s"
-    cursor.execute(query, (data[0], data[1], data[2]))
-    results = cursor.fetchall()
-    print(results)
-    return results
-
-def searchClothes2(db, data):
+def searchClothes(db, data):
     cursor = db.cursor()
     query = "SELECT * FROM clothes WHERE "
     for i, item in enumerate(data["category"]):
