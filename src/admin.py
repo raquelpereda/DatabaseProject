@@ -1,1 +1,0 @@
-# for admin functions, adding items, updating prices, etc.
